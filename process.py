@@ -94,9 +94,17 @@ def imgTest():
         chImg.show()
         print chImg.size
         print (0,h1,chImg.width,h2)
+
+        normalHeight=14
+        if h2-h1<14:
+            if h2-13 >=0:
+                h1=h2-13
+            else:
+                h2=h1+13
+
         chImg2=chImg.crop((0,h1,chImg.width,h2+1))
         chImg2.show()
-        
+
 
 if __name__=='__main__':
     imgTest()
