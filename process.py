@@ -1,4 +1,6 @@
 #coding:utf-8
+import uuid
+import os
 
 from PIL import Image
 
@@ -9,15 +11,15 @@ from PIL import Image
 
 '''
 
-def imgTest():
+def imgTest(fileName):
     #img=Image.open('img/3a41a1c0-e211-11e6-a579-448a5b698537.jpg')
     #img=Image.open('img/3a212170-e211-11e6-9313-448a5b698537.jpg')
-    img=Image.open('img/3b867dcf-e211-11e6-96f9-448a5b698537.jpg')
+    img=Image.open(fileName)
     #img=Image.open('img/3b6190ae-e211-11e6-ae12-448a5b698537.jpg')
     #img.show()
     #转换为灰度图像
     gray=img.convert('L')
-    gray.show()
+   # gray.show()
     #延水平方向遍历,统计竖直方向
 
     thresold=80
@@ -28,8 +30,8 @@ def imgTest():
         else:
             table.append(1)
     bimg=gray.point(table,"1")
-    bimg.show()
-    print 'get',bimg.getpixel((1,1))
+    #bimg.show()
+    #print 'get',bimg.getpixel((1,1))
 
     horiPixMap=[]
 
@@ -37,7 +39,7 @@ def imgTest():
         p=0
         for j in range(0,bimg.height):
             p=p+  (bimg.getpixel((i,j))==0 if 1 else 0)
-        print 'horiz',i,p
+        #print 'horiz',i,p
         horiPixMap.append(p)
 
 
@@ -45,10 +47,10 @@ def imgTest():
     print gray.size
     for i in range(0,len(horiPixMap)):
         if horiPixMap[i]>0:
-            print i,horiPixMap[i]-1
+            #print i,horiPixMap[i]-1
             horiImg.putpixel((i,horiPixMap[i]-1),1)
 
-    horiImg.show()
+    #horiImg.show()
 
     beginIdx=0
     charLocation=[]
@@ -62,7 +64,7 @@ def imgTest():
             beginIdx=beginIdx+1
 
 
-    print charLocation
+    #print charLocation
 
 
     for loc in charLocation:
@@ -80,7 +82,7 @@ def imgTest():
             if end:
                 h1=i
                 break
-            print ' up is ',h1
+            #print ' up is ',h1
 
         for i in range(chImg.height-1,-1,-1):
             end=False
@@ -91,23 +93,41 @@ def imgTest():
             if end:
                 h2=i
                 break
-        chImg.show()
+        #chImg.show()
         print chImg.size
         print (0,h1,chImg.width,h2)
 
-        normalHeight=14
+        normalHeight=15
         if h2-h1<14:
             if h2-13 >=0:
-                h1=h2-13
+                h1=h2-14
             else:
-                h2=h1+13
+                h2=h1+14
 
         chImg2=chImg.crop((0,h1,chImg.width,h2+1))
-        chImg2.show()
+        #chImg2.show()
+        print 'result size',chImg2.size
 
+        #对图片进行统一化 宽12,高15
+        if chImg2.size!=(11,15):
+            tmpImg=Image.new("1",(11,15),255)
+            start=(15-chImg2.width)/2-1
+            print 'start',start
+            tmpImg.paste(chImg2,(start,0))
+            chImg2=tmpImg
+
+        chImg2.save('ch/'+str(uuid.uuid1())+'.png')
 
 if __name__=='__main__':
-    imgTest()
+    if True:
+        images = os.listdir('img')
+        i=0
+        total=100
+        for img in images:
+            imgTest('img/'+img)
+            i=i+1
+            if i==total:
+                break
 
 
 
