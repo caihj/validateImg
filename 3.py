@@ -6,7 +6,7 @@ from PIL import Image
 
 def nonlin(x,deriv=False):
     if(deriv==True):
-        return x*(1-x)*9
+        return x*(1-x)
     return 1/(1+np.exp(-x))
 
 
@@ -53,7 +53,7 @@ def main():
     images=os.listdir('ch')
     i=0
     for img in images:
-        print " img name",img
+        print (" img name",img)
         im = Image.open("ch/"+img)
         arr = np.asarray(im,dtype="uint32")  #将img数据转化为数组形式
         l = []
@@ -62,17 +62,17 @@ def main():
                 l.append(a)
 
         label=img.split('.')[1]
-        train(np.asanyarray([l]),np.asanyarray([[int(label)]]))
+        train(np.asanyarray([l]),np.asanyarray([[float(label)/10]]))
 
 
 if __name__=='__main__':
     main()
 
-    im=Image.open("ch/58f3a340-ea89-11e6-9d29-448a5b698537.8.png")
+    im=Image.open("ch/61e8e191-ea89-11e6-9cc8-448a5b698537.1.png")
     arr = np.asarray(im,dtype="float32")  #将img数据转化为数组形式
     l = []
     for ar in arr:
         for a in ar:
             l.append(a)
 
-    print match(np.asanyarray(l))
+    print(match(np.asanyarray(l)))

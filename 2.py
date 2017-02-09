@@ -22,7 +22,7 @@ np.random.seed(1)
 syn0 = 2*np.random.random((3,4)) - 1
 syn1 = 2*np.random.random((4,1)) - 1
 
-for j in xrange(60000):
+for j in range(60000):
 
     # Feed forward through layers 0, 1, and 2
     l0 = X
@@ -33,7 +33,7 @@ for j in xrange(60000):
     l2_error = y - l2
 
     if (j% 10000) == 0:
-        print "Error:" + str(np.mean(np.abs(l2_error)))
+        print ("Error:" + str(np.mean(np.abs(l2_error))))
 
     # in what direction is the target value?
     # were we really sure? if so, don't change too much.
@@ -54,7 +54,7 @@ def match(d):
     l2=nonlin(np.dot(l1,syn1))
     return l2
 
-print 'l1 is ',l1
-print 'l2 is ',l2
+print ('l1 is ',l1)
+print ('l2 is ',l2)
 
-print 'match',(match([1,1,1]))
+print ('match',(match([1,1,1])))

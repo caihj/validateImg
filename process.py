@@ -31,7 +31,7 @@ def imgTest(fileName):
             table.append(1)
     bimg=gray.point(table,"1")
     #bimg.show()
-    #print 'get',bimg.getpixel((1,1))
+    #print('get',bimg.getpixel((1,1)))
 
     horiPixMap=[]
 
@@ -39,15 +39,15 @@ def imgTest(fileName):
         p=0
         for j in range(0,bimg.height):
             p=p+  (bimg.getpixel((i,j))==0 if 1 else 0)
-        #print 'horiz',i,p
+        #print('horiz',i,p)
         horiPixMap.append(p)
 
 
     horiImg=Image.new('1',gray.size)
-    print gray.size
+    print(gray.size)
     for i in range(0,len(horiPixMap)):
         if horiPixMap[i]>0:
-            #print i,horiPixMap[i]-1
+            #print(i,horiPixMap[i]-1)
             horiImg.putpixel((i,horiPixMap[i]-1),1)
 
     #horiImg.show()
@@ -64,7 +64,7 @@ def imgTest(fileName):
             beginIdx=beginIdx+1
 
 
-    #print charLocation
+    #print(charLocation)
 
 
     for loc in charLocation:
@@ -82,7 +82,7 @@ def imgTest(fileName):
             if end:
                 h1=i
                 break
-            #print ' up is ',h1
+            #print(' up is ',h1)
 
         for i in range(chImg.height-1,-1,-1):
             end=False
@@ -94,8 +94,8 @@ def imgTest(fileName):
                 h2=i
                 break
         #chImg.show()
-        print chImg.size
-        print (0,h1,chImg.width,h2)
+        print(chImg.size)
+        print((0,h1,chImg.width,h2))
 
         normalHeight=15
         if h2-h1<14:
@@ -106,13 +106,13 @@ def imgTest(fileName):
 
         chImg2=chImg.crop((0,h1,chImg.width,h2+1))
         #chImg2.show()
-        print 'result size',chImg2.size
+        print('result size',chImg2.size)
 
         #对图片进行统一化 宽12,高15
         if chImg2.size!=(11,15):
             tmpImg=Image.new("1",(11,15),255)
             start=(15-chImg2.width)/2-1
-            print 'start',start
+            print('start',start)
             tmpImg.paste(chImg2,(start,0))
             chImg2=tmpImg
 
