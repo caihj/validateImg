@@ -6,15 +6,15 @@ from PIL import Image
 
 def nonlin(x,deriv=False):
     if(deriv==True):
-        return x*(1-x)*9
-    return 1/(1+np.exp(-x))
+        return x*(1-x)
+    return 1/(1+np.exp(-x))*9
 
 
 np.random.seed(1)
 
 # randomly initialize our weights with mean 0
-syn0 = np.random.random((165,10))
-syn1 = np.random.random((10,1))
+syn0 = 2*np.random.random((165,10))-1
+syn1 = 2*np.random.random((10,1))-1
 
 def train(X,y):
     global syn0
@@ -68,7 +68,7 @@ def main():
 if __name__=='__main__':
     main()
 
-    im=Image.open("ch/58f3a340-ea89-11e6-9d29-448a5b698537.8.png")
+    im=Image.open("ch/61e78200-ea89-11e6-958c-448a5b698537.9.png")
     arr = np.asarray(im,dtype="float32")  #将img数据转化为数组形式
     l = []
     for ar in arr:

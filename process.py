@@ -109,20 +109,22 @@ def imgTest(fileName):
         print 'result size',chImg2.size
 
         #对图片进行统一化 宽12,高15
-        if chImg2.size!=(11,15):
-            tmpImg=Image.new("1",(11,15),255)
+        if chImg2.size!=(12,15):
+            tmpImg=Image.new("1",(12,15),255)
             start=(15-chImg2.width)/2-1
             print 'start',start
             tmpImg.paste(chImg2,(start,0))
             chImg2=tmpImg
 
+        chImg2 = chImg2.resize((28,28))
+        #chImg2.show()
         chImg2.save('ch/'+str(uuid.uuid1())+'.png')
 
 if __name__=='__main__':
     if True:
         images = os.listdir('img')
         i=0
-        total=100
+        total=10000
         for img in images:
             imgTest('img/'+img)
             i=i+1
