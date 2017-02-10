@@ -7,14 +7,18 @@ from PIL import Image
 def nonlin(x,deriv=False):
     if(deriv==True):
         return x*(1-x)
+<<<<<<< HEAD
     return 1/(1+np.exp(-x))
+=======
+    return 1/(1+np.exp(-x))*9
+>>>>>>> master
 
 
 np.random.seed(1)
 
 # randomly initialize our weights with mean 0
-syn0 = np.random.random((165,10))
-syn1 = np.random.random((10,1))
+syn0 = 2*np.random.random((165,10))-1
+syn1 = 2*np.random.random((10,1))-1
 
 def train(X,y):
     global syn0
@@ -68,7 +72,9 @@ def main():
 if __name__=='__main__':
     main()
 
+
     im=Image.open("ch/61e8e191-ea89-11e6-9cc8-448a5b698537.1.png")
+
     arr = np.asarray(im,dtype="float32")  #将img数据转化为数组形式
     l = []
     for ar in arr:
