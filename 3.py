@@ -7,11 +7,11 @@ from PIL import Image
 def nonlin(x,deriv=False):
     if(deriv==True):
         return x*(1-x)
-<<<<<<< HEAD
+
     return 1/(1+np.exp(-x))
-=======
-    return 1/(1+np.exp(-x))*9
->>>>>>> master
+
+    return 1/(1+np.exp(-x))
+
 
 
 np.random.seed(1)
