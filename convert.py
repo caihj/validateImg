@@ -17,17 +17,32 @@ def convert(fileName):
 
 def classfier():
     for i in range(10):
-        os.mkdir('ch/'+i)
+        try:
+            os.mkdir('ch/'+str(i))
+        except Exception,e:
+            pass
 
 
     for img in os.listdir('ch'):
+        print 'rename',img
+        if len(img)==1:
+            continue
         num = img.split('.')[1]
         os.rename('ch/'+img,'ch/'+num+'/'+img)
 
+def restore():
+    for i in range(10):
+        for file in os.listdir('ch/'+str(i)):
+            os.rename('ch/'+str(i)+'/'+file,'ch/'+file)
 
-
+def delBad():
+    for img in os.listdir('ch'):
+        if len(img.split('.'))<=2:
+            os.remove('ch/'+img)
 
 if __name__=="__main__":
+    delBad()
+    os._exit(0)
     imgs= os.listdir('ch')
     for img in imgs:
         convert(img)

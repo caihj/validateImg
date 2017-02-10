@@ -21,6 +21,7 @@ def imgTest(fileName):
     gray=img.convert('L')
    # gray.show()
     #延水平方向遍历,统计竖直方向
+    retFile=[]
 
     thresold=80
     table=[]
@@ -118,7 +119,12 @@ def imgTest(fileName):
 
         chImg2 = chImg2.resize((28,28))
         #chImg2.show()
-        chImg2.save('ch/'+str(uuid.uuid1())+'.png')
+        newImgFile='test/'+str(uuid.uuid1())+'.png'
+        chImg2.save(newImgFile)
+        retFile.append(newImgFile)
+    return retFile
+
+
 
 if __name__=='__main__':
     if True:

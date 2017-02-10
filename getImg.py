@@ -8,6 +8,7 @@ def getImg(url,savePath):
     saveName=savePath+'/'+str(uuid.uuid1())+'.jpg'
     print('save as',saveName)
     wget.download(url,saveName)
+    return saveName
 
 
 if __name__=='__main__':

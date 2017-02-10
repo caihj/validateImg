@@ -4,6 +4,8 @@ import operator
 import time
 from os import listdir
 
+from PIL import Image
+
 
 '''
 代码来之
@@ -29,45 +31,80 @@ def classify(inputPoint,dataSet,labels,k):
 #文本向量化 32x32 -> 1x1024
 def img2vector(filename):
     returnVect = []
-    fr = open(filename)
-    for i in range(32):
-        lineStr = fr.readline()
-        for j in range(32):
-            returnVect.append(int(lineStr[j]))
+    img=Image.open(filename)
+    for i in range(img.width):
+        for j in range(img.height):
+            returnVect.append(img.getpixel((i,j)))
     return returnVect
 
 
 #从文件名中解析分类数字
 def classnumCut(fileName):
-　  fileStr = fileName.split('.')[0]
-    classNumStr = int(fileStr.split('_')[0])
+    classNumStr = int(fileName.split('.')[1])
     return classNumStr
 #构建训练集数据向量，及对应分类标签向量
 
 def trainingDataSet():
     hwLabels = []
-    trainingFileList = listdir('trainingDigits')           #获取目录内容
+    trainingFileList = listdir('ch')           #获取目录内容
     m = len(trainingFileList)
-    trainingMat = zeros((m,1024))                          #m维向量的训练集
+    trainingMat = zeros((m,28*28))                          #m维向量的训练集
     for i in range(m):
         fileNameStr = trainingFileList[i]
         hwLabels.append(classnumCut(fileNameStr))
-        trainingMat[i,:] = img2vector('trainingDigits/%s' % fileNameStr)
+        trainingMat[i,:] = img2vector('ch/%s' % fileNameStr)
     return hwLabels,trainingMat
 
 #从文件名中解析分类数字
 def classnumCut(fileName):
-　  fileStr = fileName.split('.')[0]
-    classNumStr = int(fileStr.split('_')[0])
+    classNumStr = int(fileName.split('.')[1])
     return classNumStr
 #构建训练集数据向量，及对应分类标签向量
 def trainingDataSet():
     hwLabels = []
-    trainingFileList = listdir('trainingDigits')           #获取目录内容
+    trainingFileList = listdir('ch')           #获取目录内容
     m = len(trainingFileList)
-    trainingMat = zeros((m,1024))                          #m维向量的训练集
+    trainingMat = zeros((m,28*28))                          #m维向量的训练集
     for i in range(m):
         fileNameStr = trainingFileList[i]
         hwLabels.append(classnumCut(fileNameStr))
-        trainingMat[i,:] = img2vector('trainingDigits/%s' % fileNameStr)
+        trainingMat[i,:] = img2vector('ch/%s' % fileNameStr)
     return hwLabels,trainingMat
+
+#测试函数
+def handwritingTest():
+    hwLabels,trainingMat = trainingDataSet()    #构建训练集
+    testFileList = listdir('testDigits')        #获取测试集
+    errorCount = 0.0                            #错误数
+    mTest = len(testFileList)                   #测试集总样本数
+    t1 = time.time()
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        classNumStr = classnumCut(fileNameStr)
+        vectorUnderTest = img2vector('testDigits/%s' % fileNameStr)
+        #调用knn算法进行测试
+        classifierResult = classify(vectorUnderTest, trainingMat, hwLabels, 3)
+        print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr)
+        if (classifierResult != classNumStr): errorCount += 1.0
+    print "\nthe total number of tests is: %d" % mTest               #输出测试总样本数
+    print "the total number of errors is: %d" % errorCount           #输出测试错误样本数
+    print "the total error rate is: %f" % (errorCount/float(mTest))  #输出错误率
+    t2 = time.time()
+    print "Cost time: %.2fmin, %.4fs."%((t2-t1)//60,(t2-t1)%60)      #测试耗时
+
+
+def myTest():
+    hwLabels,trainingMat = trainingDataSet()    #构建训练集
+    vectorUnderTest = img2vector('test/7e6aeb8f-ecde-11e6-9c29-448a5b698537.7.png')
+    classifierResult = classify(vectorUnderTest, trainingMat, hwLabels, 3)
+    print classifierResult
+
+def imgToCode(fileName):
+    hwLabels,trainingMat = trainingDataSet()    #构建训练集
+    vectorUnderTest = img2vector(fileName)
+    classifierResult = classify(vectorUnderTest, trainingMat, hwLabels, 10)
+    return classifierResult
+
+
+if __name__ == "__main__":
+    myTest()
